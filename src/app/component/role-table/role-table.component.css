@@ -1,0 +1,21 @@
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .role-management-left {
+    flex: 0 0 30%;
+  }
+  
+  .role-management-right {
+    flex: 0 0 60%;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+  }
+  

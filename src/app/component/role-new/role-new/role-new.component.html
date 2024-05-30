@@ -1,0 +1,20 @@
+<div class="container">
+  <h2>Create New Role</h2>
+  <form (ngSubmit)="addRole()" #roleForm="ngForm">
+    <div class="form-group">
+      <label for="roleName">Role Name:</label>
+      <input type="text" class="form-control" id="roleName" [(ngModel)]="roleNew.roleName" name="name" required
+        pattern="^[^\d]+$" #name="ngModel">
+      <!-- Validation messages -->
+      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+        <div *ngIf="name.errors?.['required']">
+          Name is required.
+        </div>
+        <div *ngIf="name.errors?.['pattern']">
+          Name cannot contain numbers.
+        </div>
+      </div>
+    </div><br>
+    <button type="submit" class="btn btn-primary" [disabled]="roleForm.invalid">Save Role</button>
+  </form>
+</div>

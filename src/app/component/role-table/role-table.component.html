@@ -1,0 +1,36 @@
+<div class="container">
+  <h2>Role Management</h2>
+  <form (submit)="onSubmit()">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Role Title</th>
+            <th>Post Access</th>
+            <th>Get Access</th>
+            <th>Delete Access</th>
+            <th>Put Access</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let role of roles">
+            <td>{{ role.roleName }}</td>
+            <td>
+              <input type="checkbox" [checked]="role.authorization?.postAuth ?? false" (change)="role.authorization ? role.authorization.postAuth = !role.authorization.postAuth : null">
+            </td>
+            <td>
+              <input type="checkbox" [checked]="role.authorization?.getAuth ?? false" (change)="role.authorization ? role.authorization.getAuth = !role.authorization.getAuth : null">
+            </td>
+            <td>
+              <input type="checkbox" [checked]="role.authorization?.deleteAuth ?? false" (change)="role.authorization ? role.authorization.deleteAuth = !role.authorization.deleteAuth : null">
+            </td>
+            <td>
+              <input type="checkbox" [checked]="role.authorization?.putAuth ?? false" (change)="role.authorization ? role.authorization.putAuth = !role.authorization.putAuth : null">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
