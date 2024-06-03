@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModuleDTO } from 'src/app/model/module.model';
 import { RoleNew } from 'src/app/model/newrole.model';
+import { Role } from 'src/app/model/role.model';
 import { RoleService } from 'src/app/services/role.service';
 
 @Component({
@@ -9,13 +12,14 @@ import { RoleService } from 'src/app/services/role.service';
   styleUrls: ['./role-new.component.css']
 })
 export class RoleNewComponent {
-  [x: string]: any;
+   [x: string]: any;
   roleNew: RoleNew = {
     roleName: '',
     createdOn: new Date().toISOString(),
     updatedOn: new Date().toISOString(),
     createdBy: 1,
     updatedBy: 1,
+    modules: [],
     authorization: {
       postAccess: false,
       getAccess: false,
@@ -25,25 +29,72 @@ export class RoleNewComponent {
     
   };
 
+  availableRoles: Role[] = [];
+
+  availableModules = ['Travel', 'Employee Info', 'LMS', 'Leave'];
+
   constructor(private roleService: RoleService, private router: Router) { }
 
-  addRole(): void {
+  ngOnInit() {
+    this.fetchRoles();
+  }
+
+  fetchRoles() {
+    this.roleService.getRoles().subscribe(
+      (roles: Role[]) => {
+        this.availableRoles = roles;
+      },
+      error => {
+        console.error('Error fetching roles', error);
+      }
+    );
+  }
+
+
+  addRole(form: NgForm): void {
     if (!this.roleNew.roleName || /\d/.test(this.roleNew.roleName) || /[!@#$%^&*(),.?":{}|<>]/.test(this.roleNew.roleName)) {
       alert("Role name is required and should not contain numbers or special characters.");
       return;
     }
-  
+
     this.roleNew.updatedOn = new Date().toISOString();
 
-    this.roleService.addRole(this.roleNew)
-      .subscribe(() => {
-        console.log('Role added successfully!');
-        // alert('Record saved successfully');
-        this.router.navigate(['/role']); // Adjust the path as necessary
-      }, error => {
-        console.error('Error adding role:', error);
-        // Handle error message or display error to user
+    const selectedRole = this.availableRoles.find(role => role.roleName === this.roleNew.roleName);
+
+    if (selectedRole) {
+      const moduleRequests = this.roleNew.modules.map(moduleName => {
+        const moduleDTO: ModuleDTO = {
+          moduleName: moduleName,
+          createdOn: new Date().toISOString(),
+          createdBy: '1',
+          updatedOn: new Date().toISOString(),
+          updatedBy: '1',
+          authorization: {
+            postAuth: false,
+            getAuth: false,
+            deleteAuth: false,
+            putAuth: false,
+            createdOn: new Date().toISOString(),
+            createdBy: '1',
+            updatedOn: new Date().toISOString(),
+            updatedBy: '1'
+          }
+        };
+
+        return this.roleService.addModuleToRole(moduleDTO, selectedRole.roleId).toPromise();
       });
+
+      Promise.all(moduleRequests)
+        .then(() => {
+          console.log('Modules added successfully to role', selectedRole.roleName);
+          this.router.navigate(['/role']); // Adjust the path as necessary
+        })
+        .catch(error => {
+          console.error('Error adding modules to role:', error);
+        });
+    } else {
+      console.error('Selected role not found');
+    }
     location.reload();
   }
 }

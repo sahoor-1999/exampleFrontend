@@ -1,20 +1,35 @@
 <div class="container">
   <h2>Create New Role</h2>
-  <form (ngSubmit)="addRole()" #roleForm="ngForm">
+  <form (ngSubmit)="addRole(roleForm)" #roleForm="ngForm">
+    <!-- Role Name Dropdown -->
     <div class="form-group">
       <label for="roleName">Role Name:</label>
-      <input type="text" class="form-control" id="roleName" [(ngModel)]="roleNew.roleName" name="name" required
-        pattern="^[^\d]+$" #name="ngModel">
+      <select id="roleName" class="form-control" [(ngModel)]="roleNew.roleName" name="roleName" required #roleName="ngModel">
+        <option value="" disabled>Select a role</option>
+        <option *ngFor="let role of availableRoles" [ngValue]="role.roleName">{{ role.roleName }}</option>
+      </select>
       <!-- Validation messages -->
-      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
-        <div *ngIf="name.errors?.['required']">
-          Name is required.
-        </div>
-        <div *ngIf="name.errors?.['pattern']">
-          Name cannot contain numbers.
+      <div *ngIf="roleName.invalid && (roleName.dirty || roleName.touched)" class="text-danger">
+        <div *ngIf="roleName.errors?.['required']">
+          Role is required.
         </div>
       </div>
     </div><br>
+
+    <!-- Modules Multiselect Dropdown -->
+    <div class="form-group">
+      <label for="modules">Select Modules:</label>
+      <select id="modules" class="form-control" multiple [(ngModel)]="roleNew.modules" name="modules" required #modules="ngModel">
+        <option *ngFor="let module of availableModules" [value]="module">{{ module }}</option>
+      </select>
+      <!-- Validation messages -->
+      <div *ngIf="modules.invalid && (modules.dirty || modules.touched)" class="text-danger">
+        <div *ngIf="modules.errors?.['required']">
+          At least one module must be selected.
+        </div>
+      </div>
+    </div><br>
+
     <button type="submit" class="btn btn-primary" [disabled]="roleForm.invalid">Save Role</button>
   </form>
 </div>

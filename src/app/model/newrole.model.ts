@@ -5,5 +5,6 @@ export interface RoleNew {
     updatedOn: string;
     createdBy: number;
     updatedBy: number;
-    authorization:{}
+    modules : string[];
+    authorization:{};
   }
