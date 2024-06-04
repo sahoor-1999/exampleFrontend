@@ -1,5 +1,7 @@
-export interface ModuleDTO {
+export interface Module {
   moduleId?: number;
+  roleName: string;
+  roleId: number; // Add roleId property
   moduleName: string;
   createdOn: Date;
   updatedOn: Date;

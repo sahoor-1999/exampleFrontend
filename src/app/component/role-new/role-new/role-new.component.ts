@@ -50,7 +50,6 @@ export class RoleNewComponent {
     );
   }
 
-
   addRole(form: NgForm): void {
     if (!this.roleNew.roleName || /\d/.test(this.roleNew.roleName) || /[!@#$%^&*(),.?":{}|<>]/.test(this.roleNew.roleName)) {
       alert("Role name is required and should not contain numbers or special characters.");
@@ -65,9 +64,9 @@ export class RoleNewComponent {
       const moduleRequests = this.roleNew.modules.map(moduleName => {
         const moduleDTO: ModuleDTO = {
           moduleName: moduleName,
-          createdOn: new Date().toISOString(),
+          createdOn: new Date(),
           createdBy: '1',
-          updatedOn: new Date().toISOString(),
+          updatedOn: new Date(),
           updatedBy: '1',
           authorization: {
             postAuth: false,

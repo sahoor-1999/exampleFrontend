@@ -11,6 +11,7 @@ import { RoleNewComponent } from './component/role-new/role-new/role-new.compone
 import { HeaderComponent } from './component/header/header/header.component';
 import { HomeComponent } from './component/home/home/home.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ModuleComponent } from './component/module/module/module.component';
   
 
 @NgModule({
@@ -20,6 +21,7 @@ import { AppRoutingModule } from './app-routing.module';
     RoleNewComponent,
     HeaderComponent,
     HomeComponent,
+    ModuleComponent,
   ],
   imports: [
     BrowserModule,
