@@ -11,6 +11,8 @@ import { Module } from 'src/app/model/gumodule.model';
 export class ModuleComponent implements OnInit {
   modules: Module[] = [];
   moduleName: string = '';
+  initialModules: Module[] = [];
+  isFormChanged: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,11 +30,20 @@ export class ModuleComponent implements OnInit {
     this.moduleService.getModuleByName(moduleName).subscribe(
       (modules: Module[]) => {
         this.modules = modules;
+        this.initialModules = JSON.parse(JSON.stringify(modules)); // Clone the modules for comparison
       },
       error => {
         console.error('Error fetching modules', error);
       }
     );
+  }
+
+  onFormChange(): void {
+    this.isFormChanged = this.checkIfFormChanged();
+  }
+
+  checkIfFormChanged(): boolean {
+    return JSON.stringify(this.modules) !== JSON.stringify(this.initialModules);
   }
 
   updateModule(): void {
@@ -46,5 +57,8 @@ export class ModuleComponent implements OnInit {
         }
       );
     });
+    this.initialModules = JSON.parse(JSON.stringify(this.modules)); // Reset the initial state after update
+    this.isFormChanged = false; // Reset the form change state
+    location.reload();
   }
 }
