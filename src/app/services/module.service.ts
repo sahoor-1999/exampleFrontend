@@ -19,4 +19,5 @@ export class ModuleService {
   updateModule(module: Module): Observable<Module> {
     return this.http.put<Module>(`${this.apiUrl}/module/update`, module); // Update URL as per backend API
   }
+  
 }

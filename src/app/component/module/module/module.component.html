@@ -1,39 +1,38 @@
 <div class="container">
-    <h2>Module Management</h2>
-    <form (ngSubmit)="updateModule()">
-      <div class="table-container">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Role Name</th>
-              <th>Module Name</th>
-              <th>Post Authorization</th>
-              <th>Get Authorization</th>
-              <th>Delete Authorization</th>
-              <th>Put Authorization</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let module of modules">
-              <td>{{ module.roleName }}</td>
-              <td>{{ module.moduleName }}</td>
-              <td>
-                <input type="checkbox" [(ngModel)]="module.authorization.postAuth" name="postAuth{{module.moduleId}}">
-              </td>
-              <td>
-                <input type="checkbox" [(ngModel)]="module.authorization.getAuth" name="getAuth{{module.moduleId}}">
-              </td>
-              <td>
-                <input type="checkbox" [(ngModel)]="module.authorization.deleteAuth" name="deleteAuth{{module.moduleId}}">
-              </td>
-              <td>
-                <input type="checkbox" [(ngModel)]="module.authorization.putAuth" name="putAuth{{module.moduleId}}">
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <button type="submit" class="btn btn-primary">Update Module</button>
-    </form>
-  </div>
-  
+  <h2>Module Management</h2>
+  <form (ngSubmit)="updateModule()" #moduleForm="ngForm">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Role Name</th>
+            <th>Module Name</th>
+            <th>Post Authorization</th>
+            <th>Get Authorization</th>
+            <th>Delete Authorization</th>
+            <th>Put Authorization</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let module of modules">
+            <td>{{ module.roleName }}</td>
+            <td>{{ module.moduleName }}</td>
+            <td>
+              <input type="checkbox" [(ngModel)]="module.authorization.postAuth" name="postAuth{{module.moduleId}}" (change)="onFormChange()">
+            </td>
+            <td>
+              <input type="checkbox" [(ngModel)]="module.authorization.getAuth" name="getAuth{{module.moduleId}}" (change)="onFormChange()">
+            </td>
+            <td>
+              <input type="checkbox" [(ngModel)]="module.authorization.deleteAuth" name="deleteAuth{{module.moduleId}}" (change)="onFormChange()">
+            </td>
+            <td>
+              <input type="checkbox" [(ngModel)]="module.authorization.putAuth" name="putAuth{{module.moduleId}}" (change)="onFormChange()">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="!isFormChanged">Save Update</button>
+  </form>
+</div>
